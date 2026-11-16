@@ -44,7 +44,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libodbc2 liblua5.3-0 \
  && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /opt/asterisk/ /
+COPY --from=builder /opt/asterisk/usr/ /usr/
+COPY --from=builder /opt/asterisk/etc/asterisk/ /etc/asterisk/
+COPY --from=builder /opt/asterisk/var/lib/asterisk/ /var/lib/asterisk/
+COPY --from=builder /opt/asterisk/var/spool/asterisk/ /var/spool/asterisk/
+COPY --from=builder /opt/asterisk/var/log/asterisk/ /var/log/asterisk/
 
 RUN groupadd -r asterisk 2>/dev/null || true \
  && useradd -r -g asterisk -d /var/lib/asterisk -s /usr/sbin/nologin asterisk 2>/dev/null || true \
